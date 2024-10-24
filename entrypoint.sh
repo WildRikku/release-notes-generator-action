@@ -70,18 +70,13 @@ else
     echo "Configuring the action using $CONFIG_FILE"
 fi
 
-if [[ "workflow_dispatch" == "$GITHUB_EVENT_NAME" || "$ACTION" == "$TRIGGER_ACTION" ]]; then
-    echo "Creating release notes for Milestone $MILESTONE_ID_TO_USE into the $OUTPUT_FILENAME file"
-    java -jar /github-release-notes-generator.jar \
-    --changelog.repository=${OWNER_ID}/${REPOSITORY_NAME} \
-    --github.username=${GH_USERNAME} \
-    --github.password=${GITHUB_TOKEN} \
-    --changelog.milestone-reference=id \
-    --spring.config.location=${CONFIG_FILE} \
-    ${MILESTONE_ID_TO_USE} \
-    ${OUTPUT_FOLDER}/${OUTPUT_FILENAME}
-    cat ${OUTPUT_FOLDER}/${OUTPUT_FILENAME}
-else
-    echo "Release notes generation skipped because action was: $ACTION"
-    exit 78
-fi
+echo "Creating release notes for Milestone $MILESTONE_ID_TO_USE into the $OUTPUT_FILENAME file"
+java -jar /github-release-notes-generator.jar \
+--changelog.repository=${OWNER_ID}/${REPOSITORY_NAME} \
+--github.username=${GH_USERNAME} \
+--github.password=${GITHUB_TOKEN} \
+--changelog.milestone-reference=id \
+--spring.config.location=${CONFIG_FILE} \
+${MILESTONE_ID_TO_USE} \
+${OUTPUT_FOLDER}/${OUTPUT_FILENAME}
+cat ${OUTPUT_FOLDER}/${OUTPUT_FILENAME}
